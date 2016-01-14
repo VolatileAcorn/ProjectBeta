@@ -1,0 +1,5 @@
+Using ashley, create a movement / rendering component system
+Look at UE4 camera component and movement component
+We will have two update loops, render and update to decouple logic and rendering
+Do some maths to work out how to update position based on velocity and also render
+Build and renderer more than 1 entities using a texture component, position component and render entity system
