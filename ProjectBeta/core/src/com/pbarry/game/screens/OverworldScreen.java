@@ -11,10 +11,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
+import com.badlogic.gdx.math.Vector2;
 import com.pbarry.game.Level;
+import com.pbarry.game.components.CameraTargetComponent;
 import com.pbarry.game.components.PlayerInputComponent;
 import com.pbarry.game.components.SpriteComponent;
 import com.pbarry.game.components.TransformComponent;
+import com.pbarry.game.systems.CameraUpdateSystem;
 import com.pbarry.game.systems.PlayerInputSystem;
 import com.pbarry.game.systems.PositionFromVelocityUpdateSystem;
 import com.pbarry.game.systems.RenderSystem;
@@ -43,13 +46,17 @@ public class OverworldScreen implements Screen {
         mapRenderer.setView(mapCamera);
         engine = new Engine();
         player = new Entity();
+        player.add(new CameraTargetComponent());
         player.add(new PlayerInputComponent());
-        player.add(new TransformComponent(50f,50f,0f,0f,1f,1f,0f));
+        player.add(new TransformComponent(new Vector2(20,20),new Vector2(0,0),new Vector2(1,1),0));
         player.add(new SpriteComponent("Duck1.png"));
         engine.addEntity(player);
         engine.addSystem(new PlayerInputSystem());
         engine.addSystem(new PositionFromVelocityUpdateSystem());
         engine.addSystem(new RenderSystem(batch));
+        CameraUpdateSystem cameraUpdateSystem = new CameraUpdateSystem(mapCamera, mapRenderer);
+        cameraUpdateSystem.setTarget(player);
+        engine.addSystem(cameraUpdateSystem);
 
     }
 

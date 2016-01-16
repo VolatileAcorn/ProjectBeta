@@ -5,7 +5,9 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.math.Vector2;
 import com.pbarry.game.components.TransformComponent;
+import com.sun.javafx.geom.Vec2d;
 
 /**
  * Created by Tom on 14/01/2016.
@@ -22,9 +24,6 @@ public class PositionFromVelocityUpdateSystem extends IteratingSystem{
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         TransformComponent transform = tm.get(entity);
-
-        transform.setxPos(transform.getxPos() + transform.getxVel() * deltaTime);
-        transform.setyPos(transform.getyPos() + transform.getyVel() * deltaTime);
-
+        transform.setPosition(transform.getPosition().add(transform.getVelocity().scl(deltaTime)));
     }
 }

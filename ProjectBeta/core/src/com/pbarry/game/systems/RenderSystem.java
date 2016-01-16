@@ -19,7 +19,7 @@ public class RenderSystem extends IteratingSystem {
     SpriteBatch batch;
 
     public RenderSystem(SpriteBatch batch) {
-        super(Family.all(TransformComponent.class, SpriteComponent.class).get(), 3);
+        super(Family.all(TransformComponent.class, SpriteComponent.class).get(), 1000);
         this.batch = batch;
     }
 
@@ -27,6 +27,6 @@ public class RenderSystem extends IteratingSystem {
     protected void processEntity(Entity entity, float deltaTime) {
         TransformComponent transform = tm.get(entity);
         SpriteComponent sprite = sm.get(entity);
-        batch.draw(sprite.texture,transform.getxPos(),transform.getyPos());
+        batch.draw(sprite.texture,transform.getPosition().x,transform.getPosition().y);
     }
 }

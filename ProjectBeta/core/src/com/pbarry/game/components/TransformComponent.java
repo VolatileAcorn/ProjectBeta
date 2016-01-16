@@ -1,76 +1,47 @@
 package com.pbarry.game.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Tom on 13/01/2016.
  */
 public class TransformComponent implements Component {
 
-    private float xPos;
-    private float yPos;
-    private float xVel;
-    private float yVel;
-    private float xScale;
-    private float yScale;
+    private Vector2 Position;
+    private Vector2 Velocity;
+    private Vector2 Scale;
     private float clockRotation;
 
-    public TransformComponent(float xPos, float yPos, float xVel, float yVel, float xScale, float yScale, float clockRotation) {
-        this.xPos = xPos;
-        this.yPos = yPos;
-        this.xVel = xVel;
-        this.yVel = yVel;
-        this.xScale = xScale;
-        this.yScale = yScale;
+    public TransformComponent(Vector2 position, Vector2 velocity, Vector2 scale, float clockRotation) {
+        Position = position;
+        Velocity = velocity;
+        Scale = scale;
         this.clockRotation = clockRotation;
     }
 
-    public float getxPos() {
-        return xPos;
+    public Vector2 getPosition() {
+        return Position;
     }
 
-    public void setxPos(float xPos) {
-        this.xPos = xPos;
+    public void setPosition(Vector2 position) {
+        Position = position;
     }
 
-    public float getyPos() {
-        return yPos;
+    public Vector2 getVelocity() {
+        return Velocity;
     }
 
-    public void setyPos(float yPos) {
-        this.yPos = yPos;
+    public void setVelocity(Vector2 velocity) {
+        Velocity = velocity;
     }
 
-    public float getxVel() {
-        return xVel;
+    public Vector2 getScale() {
+        return Scale;
     }
 
-    public void setxVel(float xVel) {
-        this.xVel = xVel;
-    }
-
-    public float getyVel() {
-        return yVel;
-    }
-
-    public void setyVel(float yVel) {
-        this.yVel = yVel;
-    }
-
-    public float getxScale() {
-        return xScale;
-    }
-
-    public void setxScale(float xScale) {
-        this.xScale = xScale;
-    }
-
-    public float getyScale() {
-        return yScale;
-    }
-
-    public void setyScale(float yScale) {
-        this.yScale = yScale;
+    public void setScale(Vector2 scale) {
+        Scale = scale;
     }
 
     public float getClockRotation() {

@@ -8,6 +8,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector2;
 import com.pbarry.game.components.PlayerInputComponent;
 import com.pbarry.game.components.TransformComponent;
 
@@ -78,26 +79,25 @@ public class PlayerInputSystem extends IteratingSystem {
     protected void processEntity(Entity entity, float deltaTime) {
         TransformComponent transform = entity.getComponent(TransformComponent.class);
 
-        transform.setxVel(0f);
-        transform.setyVel(0f);
+        transform.setVelocity(new Vector2(0,0));
 
         if (Gdx.input.isKeyPressed(upKey)){
-            transform.setyVel(walkingSpeed);
+            transform.setVelocity(new Vector2(0,walkingSpeed));
         }
         else if (Gdx.input.isKeyPressed(downKey)){
-            transform.setyVel(-walkingSpeed);
+            transform.setVelocity(new Vector2(0, -walkingSpeed));
         }
 
         if (Gdx.input.isKeyPressed(rightKey)){
-            transform.setxVel(walkingSpeed);
+            transform.setVelocity(new Vector2(walkingSpeed, transform.getVelocity().y));
         }
         else if (Gdx.input.isKeyPressed(leftKey)){
-            transform.setxVel(-walkingSpeed);
+            transform.setVelocity(new Vector2(-walkingSpeed, transform.getVelocity().y));
         }
 
         if (Gdx.input.isKeyPressed(sprintKey)){
-            transform.setxVel(transform.getxVel() * runMultiplier);
-            transform.setyVel(transform.getyVel()*runMultiplier);
+            transform.setVelocity(transform.getVelocity().scl(runMultiplier));
+
         }
     }
 
