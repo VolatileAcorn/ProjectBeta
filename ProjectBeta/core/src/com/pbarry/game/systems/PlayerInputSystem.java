@@ -23,6 +23,7 @@ public class PlayerInputSystem extends IteratingSystem {
     private int rightKey = Input.Keys.D;
     private int sprintKey = Input.Keys.SHIFT_LEFT;
 
+    //might want to set the magnitude of the velocities to 40f then scale by run multiplier
     private float walkingSpeed = 40.0f;
     private float runMultiplier = 2.0f;
 

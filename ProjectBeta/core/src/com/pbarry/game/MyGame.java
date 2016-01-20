@@ -1,19 +1,20 @@
 package com.pbarry.game;
 
-import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pbarry.game.screens.OverworldScreen;
 
 public class MyGame extends Game {
 
-	GameState currentGameState;
+	private MapLoader mapLoader;
 	OverworldScreen overworldScreen;
+	private int currentMapID;
 
-	
+
 	@Override
 	public void create () {
-		overworldScreen = new OverworldScreen();
+		currentMapID = 1;
+		mapLoader = new MapLoader();
+		overworldScreen = new OverworldScreen(this);
 		setScreen(overworldScreen);
 	}
 
@@ -22,7 +23,8 @@ public class MyGame extends Game {
 		super.render();
 	}
 
-	public enum GameState{
-		OVERWORLD, BATTLE, MAINMENU, PAUSED
+	public int getCurrentMapID() {
+		return currentMapID;
 	}
 }
+
