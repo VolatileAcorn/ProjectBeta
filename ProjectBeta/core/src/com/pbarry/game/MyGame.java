@@ -8,6 +8,7 @@ public class MyGame extends Game {
 	private MapLoader mapLoader;
 	OverworldScreen overworldScreen;
 	private int currentMapID;
+	private SaveManager saveManager;
 
 
 	@Override

@@ -57,16 +57,7 @@ public class OverworldScreen implements Screen {
         batch = new SpriteBatch();
         mapRenderer = new OrthogonalTiledMapRenderer(mapLoader.getMap(game.getCurrentMapID()), batch);
         mapRenderer.setView(mapCamera);
-        engine = new Engine();
-        player = new Player("Duck1.png",new Vector2(100,100));
-        engine.addEntity(player);
-        engine.addSystem(new PlayerInputSystem());
-        engine.addSystem(new PositionFromVelocityUpdateSystem());
-        engine.addSystem(new RenderSystem(batch));
-        CameraUpdateSystem cameraUpdateSystem = new CameraUpdateSystem(mapCamera, mapRenderer);
-        cameraUpdateSystem.setTarget(player);
-        engine.addSystem(cameraUpdateSystem);
-
+        LoadEngine();
     }
 
     @Override
@@ -102,6 +93,18 @@ public class OverworldScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    public void LoadEngine() {
+        engine = new Engine();
+        player = new Player("Duck1.png",new Vector2(100,100));
+        engine.addEntity(player);
+        engine.addSystem(new PlayerInputSystem());
+        engine.addSystem(new PositionFromVelocityUpdateSystem());
+        engine.addSystem(new RenderSystem(batch));
+        CameraUpdateSystem cameraUpdateSystem = new CameraUpdateSystem(mapCamera, mapRenderer);
+        cameraUpdateSystem.setTarget(player);
+        engine.addSystem(cameraUpdateSystem);
     }
 
 
