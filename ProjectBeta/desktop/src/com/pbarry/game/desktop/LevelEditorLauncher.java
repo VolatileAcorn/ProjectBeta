@@ -2,7 +2,7 @@ package com.pbarry.game.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.pbarry.game.LevelEditor;
+import com.pbarry.game.levelEditor.LevelEditor;
 
 /**
  * Created by Tom on 20/01/2016.

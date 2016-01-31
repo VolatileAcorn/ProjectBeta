@@ -39,8 +39,8 @@ public class StartScreen implements Screen {
         skin.add("default", font);
 
         //create button texture
-        NinePatch ninePatch = new NinePatch(new Texture("Textures/9PatchTest.png"),25,25,25,25);
-        skin.add("background", ninePatch);
+        Texture buttonTexture = new Texture("Textures/button1.png");
+        skin.add("background", buttonTexture);
 
         //create a button style
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
