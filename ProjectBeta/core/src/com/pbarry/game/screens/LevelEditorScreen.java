@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.pbarry.game.levelEditor.LevelEditor;
 import com.pbarry.game.MapLoader;
 import com.pbarry.game.levelEditor.LevelEditorController;
+import com.pbarry.game.levelEditor.LevelFile;
 
 /**
  * Created by Tom on 20/01/2016.
@@ -30,6 +31,7 @@ public class LevelEditorScreen implements Screen {
     public final static int VIEWPORT_HEIGHT = 216;
 
     private LevelEditor levelEditor;
+    private LevelFile levelFile;
 
     private final Vector2 GUI_BUTTON_SIZES = new Vector2(210,70);
 
@@ -46,6 +48,7 @@ public class LevelEditorScreen implements Screen {
 
     public LevelEditorScreen(LevelEditor levelEditor) {
         this.levelEditor = levelEditor;
+        levelFile = new LevelFile();
 
         mapLoader = new MapLoader();
         mapRenderer = new OrthogonalTiledMapRenderer(mapLoader.getMap(1));
@@ -53,6 +56,62 @@ public class LevelEditorScreen implements Screen {
         mapRenderer.setView(mapCamera);
 
         batch = new SpriteBatch();
+    }
+
+
+    @Override
+    public void show() {
+        engine = new Engine();
+        levelEditorController = new LevelEditorController(mapCamera);
+        createSkin();
+        createStage();
+    }
+
+    @Override
+    public void render(float delta) {
+
+        //clear screen
+        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        //update camera
+        levelEditorController.update();
+        mapRenderer.setView(mapCamera);
+        //draw map
+        mapRenderer.render();
+        //draw entities
+        batch.begin();
+        engine.update(delta);
+        batch.end();
+
+        //draw gui
+        stage.act();
+        stage.draw();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+
     }
 
 
@@ -109,61 +168,6 @@ public class LevelEditorScreen implements Screen {
                 //create dialog which will have a chain of events to create new level
             } } );
         stage.addActor(createLevelButton);
-
-    }
-
-    @Override
-    public void show() {
-        engine = new Engine();
-        levelEditorController = new LevelEditorController(mapCamera);
-        createSkin();
-        createStage();
-    }
-
-    @Override
-    public void render(float delta) {
-
-        //clear screen
-        Gdx.gl.glClearColor(0, 0, 0, 0);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        //update camera
-        levelEditorController.update();
-        mapRenderer.setView(mapCamera);
-        //draw map
-        mapRenderer.render();
-        //draw entities
-        batch.begin();
-        engine.update(delta);
-        batch.end();
-
-        //draw gui
-        stage.act();
-        stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
 
     }
 }
