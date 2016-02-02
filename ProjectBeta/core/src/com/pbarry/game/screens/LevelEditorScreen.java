@@ -3,19 +3,22 @@ package com.pbarry.game.screens;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.pbarry.game.levelEditor.LevelEditor;
 import com.pbarry.game.MapLoader;
 import com.pbarry.game.levelEditor.LevelEditorController;
@@ -47,6 +50,7 @@ public class LevelEditorScreen implements Screen {
     private Engine engine;
 
     public LevelEditorScreen(LevelEditor levelEditor) {
+        /*
         this.levelEditor = levelEditor;
         levelFile = new LevelFile();
 
@@ -56,15 +60,21 @@ public class LevelEditorScreen implements Screen {
         mapRenderer.setView(mapCamera);
 
         batch = new SpriteBatch();
+        */
     }
 
 
     @Override
     public void show() {
+        stage = new Stage();
+        createSkin();
+        Gdx.input.setInputProcessor(stage);
+        showLoadLevelGUI();
+        /*
         engine = new Engine();
         levelEditorController = new LevelEditorController(mapCamera);
-        createSkin();
-        createStage();
+
+        */
     }
 
     @Override
@@ -74,19 +84,22 @@ public class LevelEditorScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        /*
         //update camera
         levelEditorController.update();
         mapRenderer.setView(mapCamera);
         //draw map
         mapRenderer.render();
+
         //draw entities
         batch.begin();
         engine.update(delta);
         batch.end();
-
+        */
         //draw gui
         stage.act();
         stage.draw();
+
     }
 
     @Override
@@ -116,6 +129,7 @@ public class LevelEditorScreen implements Screen {
 
 
     private void createSkin() {
+
         //create font and add to skin
         BitmapFont font = new BitmapFont();
         skin = new Skin();
@@ -132,42 +146,34 @@ public class LevelEditorScreen implements Screen {
         textButtonStyle.checked = skin.newDrawable("background");
         textButtonStyle.over = skin.newDrawable("background");
         textButtonStyle.font = skin.getFont("default");
-        skin.add("default",textButtonStyle);
+        skin.add("default", textButtonStyle);
+
+        //create text field style
+        TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
+        textFieldStyle.background = skin.newDrawable("background");
+        textFieldStyle.fontColor = new Color(1.0f,1.0f,1.0f,1.0f);
+        textFieldStyle.font = new BitmapFont(new FileHandle("Fonts/gamefont.fnt"));
+        skin.add("default", textFieldStyle);
+
     }
 
-    private void createStage(){
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
 
-        //make createEntityButton
-        TextButton createEntityButton = new TextButton("Create Entity", skin);
-        createEntityButton.setPosition(Gdx.graphics.getWidth() - GUI_BUTTON_SIZES.x - 5,Gdx.graphics.getHeight() - (GUI_BUTTON_SIZES.y + 5) * 1);
-        createEntityButton.setSize(GUI_BUTTON_SIZES.x, GUI_BUTTON_SIZES.y);
-        createEntityButton.addListener(new ChangeListener(){
-            public void changed (ChangeEvent event, Actor actor){
-                //create dialog which will have a chain of events to create different types of entities (static, enemy etc.)
-            } } );
-        stage.addActor(createEntityButton);
+    private void showLoadLevelGUI() {
+        //need to create a listener which will check which levelID has been entered and check if exists + valid then removes loadLevelGUI and load Engine
 
-        //make LoadNewLevelButton
-        TextButton LoadLevelButton = new TextButton("Load Level", skin);
-        LoadLevelButton.setPosition(Gdx.graphics.getWidth() - GUI_BUTTON_SIZES.x - 5,Gdx.graphics.getHeight() - (GUI_BUTTON_SIZES.y + 5) * 2);
-        LoadLevelButton.setSize(GUI_BUTTON_SIZES.x, GUI_BUTTON_SIZES.y);
-        LoadLevelButton.addListener(new ChangeListener(){
-            public void changed (ChangeEvent event, Actor actor){
-                //create dialog which will have a chain of events to load a level (map and engine state)
-            } } );
-        stage.addActor(LoadLevelButton);
+        TextField levelDirectoryField = new TextField("Enter LevelID...", skin,"default");
+        levelDirectoryField.setMaxLength(3);
 
-        //make CreateNewLevelButton
-        TextButton createLevelButton = new TextButton("Create New Level", skin);
-        createLevelButton.setPosition(Gdx.graphics.getWidth() - GUI_BUTTON_SIZES.x - 5,Gdx.graphics.getHeight() - (GUI_BUTTON_SIZES.y + 5) * 3);
-        createLevelButton.setSize(GUI_BUTTON_SIZES.x, GUI_BUTTON_SIZES.y);
-        createLevelButton.addListener(new ChangeListener(){
-            public void changed (ChangeEvent event, Actor actor){
-                //create dialog which will have a chain of events to create new level
-            } } );
-        stage.addActor(createLevelButton);
-
+        //only accept numbers as inputs
+        levelDirectoryField.setTextFieldFilter(new TextField.TextFieldFilter() {
+            @Override
+            public boolean acceptChar(TextField textField, char c) {
+                return Character.isDigit(c);
+            }
+        });
+        levelDirectoryField.setAlignment(1);
+        levelDirectoryField.setSize(600,200);
+        levelDirectoryField.setPosition(640,360);
+        stage.addActor(levelDirectoryField);
     }
 }
